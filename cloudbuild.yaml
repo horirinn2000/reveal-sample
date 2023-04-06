@@ -1,0 +1,28 @@
+steps:
+  # Build the container image
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["build", "-t", "gcr.io/$PROJECT_ID/$_CONTAINER_NAME:$COMMIT_SHA", "-t", "gcr.io/$PROJECT_ID/$_CONTAINER_NAME:latest", '-f', './$_DIR_NAME/$_DOCKER_FILE', '.', '--build-arg', "_DIR_NAME=$_DIR_NAME"]
+  # Push the image to Container Registry
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "gcr.io/$PROJECT_ID/$_CONTAINER_NAME:$COMMIT_SHA"]
+  # Push the image to Container Registry
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "gcr.io/$PROJECT_ID/$_CONTAINER_NAME:latest"]
+  - name: "gcr.io/cloud-builders/gcloud"
+    args:
+      - "run"
+      - "deploy"
+      - "$_CONTAINER_NAME"
+      - "--image"
+      - "gcr.io/$PROJECT_ID/$_CONTAINER_NAME:$COMMIT_SHA"
+      - "--region"
+      - "asia-northeast1"
+      - "--platform"
+      - "managed"
+substitutions:
+    _DIR_NAME: server
+    _DOCKER_FILE: Dockerfile
+    _CONTAINER_NAME: test-container
+images:
+  - gcr.io/$PROJECT_ID/$_CONTAINER_NAME
+timeout: 3600s
