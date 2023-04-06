@@ -6,8 +6,6 @@ const app: Application = express();
 
 app.use(cors());
 
-app.use("/", reveal());
-
 const revealOptions: RevealOptions = {
     localFileStoragePath: "data"
 }
