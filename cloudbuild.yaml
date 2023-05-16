@@ -11,6 +11,8 @@ steps:
       - './$_DIR_NAME/$_DOCKER_FILE'
       - '.'
       - '--build-arg'
+      - "_DIR_NAME=$_DIR_NAME"
+      - '--build-arg'
       - "_MYSQL_DB_HOST=$_MYSQL_DB_HOST"
       - '--build-arg'
       - "_MYSQL_DB_DATABASE=$_MYSQL_DB_DATABASE"
