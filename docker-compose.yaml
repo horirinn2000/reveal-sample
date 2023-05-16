@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+  # クライアント
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    tty: true
+    volumes:
+      - ./client:/usr/src/app
+    ports:
+      - 7001:8080
+  # サーバー
+  server:
+    build:
+      context: ./server
+      dockerfile: dev.Dockerfile
+    tty: true
+    volumes:
+      - ./server:/usr/src/app
+    ports:
+      - 7002:8080

@@ -1,7 +1,35 @@
 steps:
   # Build the container image
   - name: "gcr.io/cloud-builders/docker"
-    args: ["build", "-t", "gcr.io/$PROJECT_ID/$_CONTAINER_NAME:$COMMIT_SHA", "-t", "gcr.io/$PROJECT_ID/$_CONTAINER_NAME:latest", '-f', './$_DIR_NAME/$_DOCKER_FILE', '.', '--build-arg', "_DIR_NAME=$_DIR_NAME"]
+    args: 
+      - "build"
+      - "-t"
+      - "gcr.io/$PROJECT_ID/$_CONTAINER_NAME:$COMMIT_SHA"
+      - "-t"
+      - "gcr.io/$PROJECT_ID/$_CONTAINER_NAME:latest"
+      - '-f'
+      - './$_DIR_NAME/$_DOCKER_FILE'
+      - '.'
+      - '--build-arg'
+      - "_MYSQL_DB_HOST=$_MYSQL_DB_HOST"
+      - '--build-arg'
+      - "_MYSQL_DB_DATABASE=$_MYSQL_DB_DATABASE"
+      - '--build-arg'
+      - "_MYSQL_DB_USER=$_MYSQL_DB_USER"
+      - '--build-arg'
+      - "_MYSQL_DB_PASS=$_MYSQL_DB_PASS"
+      - '--build-arg'
+      - "_MYSQL_DB_TABLE=$_MYSQL_DB_TABLE"
+      - '--build-arg'
+      - "_POSTGRESQL_DB_HOST=$_POSTGRESQL_DB_HOST"
+      - '--build-arg'
+      - "_POSTGRESQL_DB_DATABASE=$_POSTGRESQL_DB_DATABASE"
+      - '--build-arg'
+      - "_POSTGRESQL_DB_USER=$_POSTGRESQL_DB_USER"
+      - '--build-arg'
+      - "_POSTGRESQL_DB_PASS=$_POSTGRESQL_DB_PASS"
+      - '--build-arg'
+      - "_POSTGRESQL_DB_TABLE=$_POSTGRESQL_DB_TABLE"
   # Push the image to Container Registry
   - name: "gcr.io/cloud-builders/docker"
     args: ["push", "gcr.io/$PROJECT_ID/$_CONTAINER_NAME:$COMMIT_SHA"]
@@ -23,6 +51,16 @@ substitutions:
     _DIR_NAME: server
     _DOCKER_FILE: Dockerfile
     _CONTAINER_NAME: test-container
+    _MYSQL_DB_HOST:
+    _MYSQL_DB_DATABASE:
+    _MYSQL_DB_USER:
+    _MYSQL_DB_PASS:
+    _MYSQL_DB_TABLE:
+    _POSTGRESQL_DB_HOST:
+    _POSTGRESQL_DB_DATABASE:
+    _POSTGRESQL_DB_USER:
+    _POSTGRESQL_DB_PASS:
+    _POSTGRESQL_DB_TABLE:
 images:
   - gcr.io/$PROJECT_ID/$_CONTAINER_NAME
 timeout: 3600s
